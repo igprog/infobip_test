@@ -16,6 +16,7 @@ using Igprog;
 public class TravelPlan : System.Web.Services.WebService {
     Global G = new Global();
     DataBase db = new DataBase();
+    public string mainSql = "SELECT id, startLoacation, endLocation, startDate, endDate, car, employees FROM travelplan";
 
     public TravelPlan() {
     }
@@ -28,7 +29,6 @@ public class TravelPlan : System.Web.Services.WebService {
         public DateTime endDate;
         public Cars.NewCar car;
         public List<Employees.NewEmployee> employees;
-        //public bool isEdit;
     }
 
     public class Response {
@@ -57,8 +57,7 @@ public class TravelPlan : System.Web.Services.WebService {
     public string Load() {
         Response x = new Response();
         try {
-            string sql = "SELECT id, startLoacation, endLocation, startDate, endDate, car, employees FROM travelplan";
-            x.data = LoadData(sql);
+            x.data = LoadData(mainSql);
             x.msg = null; 
             return JsonConvert.SerializeObject(x, Formatting.None);
         } catch (Exception e) {
@@ -69,14 +68,13 @@ public class TravelPlan : System.Web.Services.WebService {
 
     [WebMethod]
     public string Get(string id) {
-        //Response x = new Response();
         NewTravelPlan x = new NewTravelPlan();
         try {
             if (!string.IsNullOrEmpty(id)) {
                 db.CreateDataBase(G.db.travelplan);
                 using (SQLiteConnection connection = new SQLiteConnection("Data Source=" + db.GetDataBasePath(G.dataBase))) {
                     connection.Open();
-                    string sql = string.Format("SELECT id, startLoacation, endLocation, startDate, endDate, car, employees FROM travelplan WHERE id = '{0}'", id);
+                    string sql = string.Format("{0} WHERE id = '{1}'", mainSql, id);
                     using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
                         using (SQLiteDataReader reader = command.ExecuteReader()) {
                             while (reader.Read()) {
@@ -89,11 +87,8 @@ public class TravelPlan : System.Web.Services.WebService {
             } else {
                 x = cInit();
             }
-            
-            //x.msg = null; 
             return JsonConvert.SerializeObject(x, Formatting.None);
         } catch (Exception e) {
-            //x.msg = e.Message;
             return JsonConvert.SerializeObject(x, Formatting.None);
         }
     }
@@ -103,7 +98,6 @@ public class TravelPlan : System.Web.Services.WebService {
         db.CreateDataBase(G.db.travelplan);
         using (SQLiteConnection connection = new SQLiteConnection("Data Source=" + db.GetDataBasePath(G.dataBase))) {
             connection.Open();
-            //string sql = "SELECT id, startLoacation, endLocation, startDate, endDate, car, employees FROM travelplan";
             using (SQLiteCommand command = new SQLiteCommand(sql, connection)) {
                 using (SQLiteDataReader reader = command.ExecuteReader()) {
                     while (reader.Read()) {
@@ -114,46 +108,25 @@ public class TravelPlan : System.Web.Services.WebService {
             }
             connection.Close();
         }
-        //if (xx.Count == 0) {
-        //    xx.Add(InitTravelPlan());
-        //}
         return xx;
     }
 
     public NewTravelPlan ReadData(SQLiteDataReader reader) {
-        //List<NewTravelPlan>  xx = new List<NewTravelPlan>();
         NewTravelPlan x = new NewTravelPlan();
         x.id = G.ReadS(reader, 0);
         x.startLoacation = G.ReadS(reader, 1);
         x.endLocation = G.ReadS(reader, 2);
         x.startDate = G.ReadDT(reader, 3);
         x.endDate = G.ReadDT(reader, 4);
-
-        //TODO: GetCar()
-        //x.car = G.ReadS(reader, 5);
         Cars C = new Cars();
         x.car = C.Get(G.ReadS(reader, 5));
-        //TODO: GetEmployees()
-        //x.employees = G.ReadS(reader, 5);
         Employees E = new Employees();
         x.employees = E.GetSelectedEmployees(G.ReadS(reader, 6));
-        //xx.Add(Read(reader));
-
         return x;
     }
 
-
-
-   
-
-    //TODO:
-    //GetAvailableCars(location, date)
-
-
     [WebMethod]
     public string Save(NewTravelPlan x) {
-        Response r = new Response();
-        //TODO resp
         try {
             return JsonConvert.SerializeObject(SaveData(x), Formatting.None);
         } catch (Exception e) {
@@ -209,7 +182,5 @@ public class TravelPlan : System.Web.Services.WebService {
             return JsonConvert.SerializeObject(e.Message, Formatting.None);
         }
     }
-
-
 
 }

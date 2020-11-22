@@ -34,7 +34,6 @@ public class Cars : System.Web.Services.WebService {
     public string Load() {
         List<NewCar> xx = new List<NewCar>();
         try {
-            //string sql = "SELECT id, name, carType, color, plate, seats FROM cars";
             return JsonConvert.SerializeObject(LoadData(mainSql), Formatting.None);
         } catch (Exception e) { return e.Message; }
     }
@@ -43,8 +42,16 @@ public class Cars : System.Web.Services.WebService {
     public string GetAvailableCars(TravelPlan.NewTravelPlan x) {
         List<NewCar> xx = new List<NewCar>();
         try {
-            //string sql = "SELECT id, name, carType, color, plate, seats FROM cars";
-            xx = LoadData(mainSql);
+            List<NewCar> allCars = LoadData(mainSql);
+            TravelPlan TP = new TravelPlan();
+            List<TravelPlan.NewTravelPlan> tPlans = TP.LoadData(TP.mainSql);
+            foreach(var c in allCars) {
+                if (tPlans.Where(a => (a.car.id == c.id) 
+                                && ((a.endDate > x.startDate) && (a.endDate < x.endDate) 
+                                || (a.endDate > x.startDate) && (a.endDate < x.endDate))).Count() == 0) {
+                    xx.Add(c);
+                }
+            }
             return JsonConvert.SerializeObject(xx, Formatting.None);
         } catch (Exception e) {
             return JsonConvert.SerializeObject(e.Message, Formatting.None);
@@ -97,7 +104,5 @@ public class Cars : System.Web.Services.WebService {
         x.seats = G.ReadI(reader, 5);
         return x;
     }
-
-
 
 }

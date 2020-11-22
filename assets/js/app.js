@@ -70,19 +70,6 @@ angular.module('app', ['ui.router'])
     }
     load();
 
-    //$scope.edit = (x) => {
-    //    x.isEdit = !x.isEdit;
-    //    //x.arrival = f.toDate(x.arrival);
-    //    //x.departure = f.toDate(x.departure);
-    //}
-
-    //$scope.add = () => {
-    //    f.post(service, 'Init', {}).then((d) => {
-    //        //d.data.isEdit = true;
-    //        $scope.d.data.push(d);
-    //    });
-    //}
-
     $scope.save = (x) => {
         f.post(service, 'Save', { x: x }).then((d) => {
             load();

@@ -54,18 +54,13 @@ public class Employees : System.Web.Services.WebService {
     }
 
     public NewEmployee ReadData(SQLiteDataReader reader) {
-        //List<NewEmployee>  xx = new List<NewEmployee>();
-        //while (reader.Read()) {
-            NewEmployee x = new NewEmployee();
-            x.id = G.ReadI(reader, 0);
-            x.name = G.ReadS(reader, 1);
-            x.isDriver = G.ReadB(reader, 2);
-            x.isSelected = false;
-            //xx.Add(x);
-        //}
+        NewEmployee x = new NewEmployee();
+        x.id = G.ReadI(reader, 0);
+        x.name = G.ReadS(reader, 1);
+        x.isDriver = G.ReadB(reader, 2);
+        x.isSelected = false;
         return x;
     }
-
 
     public NewEmployee Get(string id) {
         NewEmployee x = new NewEmployee();
@@ -95,12 +90,7 @@ public class Employees : System.Web.Services.WebService {
                 xx.Add(x);
             }
         }
-        
         return xx;
     }
-
-
-
-
 
 }
