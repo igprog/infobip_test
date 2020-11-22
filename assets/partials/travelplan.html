@@ -1,0 +1,57 @@
+﻿<div>
+    <h2>Travel Plan</h2>
+    <form id="frm">
+        <div class="form-group">
+            <label>Start Location:</label>
+            <input ng-model="d.startLoacation" class="form-control" >
+        </div>
+        <div class="form-group">
+            <label>End Location:</label>
+            <input ng-model="d.endLocation" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Start Date:</label>
+            <input ng-model="d.startDate" type="datetime-local" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>End Date:</label>
+            <input ng-model="d.endDate" type="datetime-local" class="form-control">
+        </div>
+        <div class="pt-1 pb-3">
+            <button class="btn btn-outline-primary" ng-click="getAvailableCars(d)"><i class="fa fa-search"></i> Get Available Cars</button>
+        </div>
+        <div>
+            <div ng-if="availableCars.length>0" class="form-group">
+                <label>Available Cars:</label>
+                <select ng-model="d.car" ng-options="x.name for x in availableCars" class="form-control"></select>
+            </div>
+            <div ng-if="d.car.id" class="card form-group">
+                <div class="card-body">
+                    <label>Car:</label>
+                    <ul>
+                        <li>Model: {{d.car.name}} <em>{{d.car.carType}} / {{d.car.color}}</em></li>
+                        <li>Plate: {{d.car.plate}}</li>
+                        <li>Seats: {{d.car.seats}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Employees:</label>
+            <div class="form-check" ng-repeat="x in employees">
+                <label class="form-check-label">
+                    <input ng-model="x.isSelected" type="checkbox" class="form-check-input" ng-checked="x.isSelected" >{{x.name}} <i ng-if="x.isDriver" class="fa fa-car"></i>
+                </label>
+            </div>
+        </div>
+        <div class="text-right">
+            <button type="submit" form="frm" class="btn btn-outline-primary" ng-click="save(d, employees)"><i class="fa fa-save"></i> Save</button>
+        </div>
+        <hr />
+    </form>
+
+    <json-directive data="d" desc="'d'"></json-directive>
+    <json-directive data="employees" desc="'employees'"></json-directive>
+    <json-directive data="availableCars" desc="'availableCars'"></json-directive>
+
+</div>

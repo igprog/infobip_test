@@ -1,0 +1,51 @@
+﻿<div>
+    <h2>Ride Sharing</h2>
+    <div class="p-2">
+        <button ng-click="goPlan(null)" class="btn btn-outline-success"><i class="fa fa-plus"></i> Create new travel plan</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sm">
+            <tr>
+                <th></th>
+                <!--<th>id</th>-->
+                <th>Start Location</th>
+                <th>End Location</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Car</th>
+                <th>Employees</th>
+            </tr>
+            <tr ng-repeat="x in d.data track by $index">
+                <th>
+                    <div class="btn-group">
+                        <button ng-click="remove(x.id)" class="btn btn-outline-danger m-1" title="Remove"><i class="fa fa-trash-alt"></i></button>
+                        <button ng-click="goPlan(x.id)" class="btn btn-outline-primary m-1" title="Edit"><i class="fa fa-edit"></i></button>
+                    </div>
+                </th>
+                <!--<td>{{x.id}}</td>-->
+                <td>
+                    <span>{{x.startLoacation}}</span>
+                </td>
+                <td>
+                    <span>{{x.endLocation}}</span>
+                </td>
+                <td>
+                    <span>{{x.startDate}}</span>
+                </td>
+                <td>
+                    <span>{{x.endDate}}</span>
+                </td>
+                <td>
+                    <span>{{x.car.name}} - {{x.car.plate}}</span>
+                </td>
+                <td>
+                    <ul ng-if="x.employees.length>0">
+                        <li ng-repeat="y in x.employees">{{y.name}}</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <json-directive data="d" desc="'d'"></json-directive>
+</div>
+
