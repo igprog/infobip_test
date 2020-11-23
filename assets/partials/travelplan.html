@@ -29,19 +29,23 @@
                 <div class="card-body">
                     <label>Car:</label>
                     <ul>
-                        <li>Model: {{d.car.name}} <em>{{d.car.carType}} / {{d.car.color}}</em></li>
-                        <li>Plate: {{d.car.plate}}</li>
-                        <li>Seats: {{d.car.seats}}</li>
+                        <li>Name: <span class="font-weight-bold">{{d.car.name}}</span></li>
+                        <li>Model: <span class="font-weight-bold">{{d.car.carType}}</span></li>
+                        <li>Color: <span class="font-weight-bold">{{d.car.color}}</span></li>
+                        <li>Plate: <span class="font-weight-bold">{{d.car.plate}}</span></li>
+                        <li>Seats: <span class="font-weight-bold">{{d.car.seats}}</span></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="card form-group">
             <div class="card-body">
-                <label>Employees:</label>
-                <div class="form-check" ng-repeat="x in employees">
+                <div>
+                    <label>Employees:</label>
+                </div>
+                <div class="form-check-inline p-2" ng-repeat="x in employees">
                     <label class="form-check-label">
-                        <input ng-model="x.isSelected" type="checkbox" class="form-check-input" ng-checked="x.isSelected">{{x.name}} <i ng-if="x.isDriver" class="fa fa-id-badge"></i>
+                        <input ng-model="x.isSelected" type="checkbox" class="form-check-input" ng-checked="x.isSelected">{{x.name}} <i ng-if="x.isDriver" class="fa fa-id-badge" title="isDriver: {{x.isDriver}}"></i>
                     </label>
                 </div>
             </div>

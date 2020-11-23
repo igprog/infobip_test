@@ -193,9 +193,9 @@ public class TravelPlan : System.Web.Services.WebService {
                     }
                     connection.Close();
                 }
-                msg = "Obrisano";
+                msg = "Deleted";
             } else {
-                msg = "Pozajmica ne može biti obrisana jer nije spremljena";
+                msg = "Error";
             }
             return JsonConvert.SerializeObject(msg, Formatting.None);
         } catch (Exception e) {
