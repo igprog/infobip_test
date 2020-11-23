@@ -67,6 +67,26 @@ public class TravelPlan : System.Web.Services.WebService {
     }
 
     [WebMethod]
+    public string LoadMonth(string month, string year) {
+        Response x = new Response();
+        try {
+            List<NewTravelPlan> xx = new List<NewTravelPlan>();
+            xx = LoadData(mainSql);
+            if (!string.IsNullOrEmpty(month) && !string.IsNullOrEmpty(year)) {
+                x.data = xx.Where(a => a.startDate.Month == Convert.ToInt32(month) && a.startDate.Year == Convert.ToInt32(year)).ToList();
+            } else {
+                x.data = xx;
+            }
+
+            x.msg = null; 
+            return JsonConvert.SerializeObject(x, Formatting.None);
+        } catch (Exception e) {
+            x.msg = e.Message;
+            return JsonConvert.SerializeObject(x, Formatting.None);
+        }
+    }
+
+    [WebMethod]
     public string Get(string id) {
         NewTravelPlan x = new NewTravelPlan();
         try {

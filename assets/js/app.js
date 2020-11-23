@@ -63,12 +63,48 @@ angular.module('app', ['ui.router'])
 
 .controller('ridesharingCtrl', ['$scope', '$http', 'f', function ($scope, $http, f) {
     var service = 'TravelPlan';
+
+    $scope.months = [
+        { id: 1, title: '01' },
+        { id: 2, title: '02' },
+        { id: 3, title: '03' },
+        { id: 4, title: '04' },
+        { id: 5, title: '05' },
+        { id: 6, title: '06' },
+        { id: 7, title: '07' },
+        { id: 8, title: '08' },
+        { id: 9, title: '09' },
+        { id: 10, title: '10' },
+        { id: 11, title: '11' },
+        { id: 12, title: '12' }
+    ];
+
+    var years = () => {
+        var year = new Date().getFullYear();
+        var years = [];
+        for (var i = year; i <= year + 2; i++) {
+            years.push(i);
+        }
+        $scope.years = years;
+    }
+    years();
+
     var load = () => {
         f.post(service, 'Load', {}).then((d) => {
             $scope.d = d;
         });
     }
     load();
+
+    $scope.load = () => {
+        return load();
+    }
+
+    $scope.loadMonth = (month, year) => {
+        f.post(service, 'LoadMonth', { month: month, year: year }).then((d) => {
+            $scope.d = d;
+        });
+    }
 
     $scope.save = (x) => {
         f.post(service, 'Save', { x: x }).then((d) => {
