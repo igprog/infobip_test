@@ -28,6 +28,7 @@ public class Cars : System.Web.Services.WebService {
         public string color;
         public string plate;
         public int seats;
+        public bool isAvailable;
     }
 
     [WebMethod]
@@ -40,19 +41,21 @@ public class Cars : System.Web.Services.WebService {
 
     [WebMethod]
     public string GetAvailableCars(TravelPlan.NewTravelPlan x) {
-        List<NewCar> xx = new List<NewCar>();
         try {
-            List<NewCar> allCars = LoadData(mainSql);
+            List<NewCar> xx = LoadData(mainSql);
             TravelPlan TP = new TravelPlan();
             List<TravelPlan.NewTravelPlan> tPlans = TP.LoadData(TP.mainSql);
-            foreach(var c in allCars) {
+            foreach(var c in xx) {
                 if (tPlans.Where(a => (a.car.id == c.id) 
-                                && ((a.endDate > x.startDate) && (a.endDate < x.endDate) 
-                                || (a.endDate > x.startDate) && (a.endDate < x.endDate))).Count() == 0) {
-                    xx.Add(c);
+                                && ((DateTime.Compare(a.startDate, x.startDate) >= 0 && DateTime.Compare(a.startDate, x.endDate) < 0) 
+                                || (DateTime.Compare(a.endDate, x.startDate) >= 0 && DateTime.Compare(a.endDate, x.endDate) <= 0))).Count() > 0) {
+                    c.isAvailable = false;
+                } else {
+                    c.isAvailable = true;
                 }
             }
-            return JsonConvert.SerializeObject(xx, Formatting.None);
+            List<NewCar> availableCars = xx.Where(a => a.isAvailable).ToList();
+            return JsonConvert.SerializeObject(availableCars, Formatting.None);
         } catch (Exception e) {
             return JsonConvert.SerializeObject(e.Message, Formatting.None);
         }

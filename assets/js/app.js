@@ -113,7 +113,7 @@ angular.module('app', ['ui.router'])
     }
 
     $scope.remove = (id) => {
-        if (confirm('Delete travel plan?')) {
+        if (confirm('Remove travel plan?')) {
             f.post(service, 'Delete', { id: id }).then((d) => {
                 load();
             });
@@ -173,16 +173,8 @@ angular.module('app', ['ui.router'])
         }
 
         f.post(service, 'Save', { x: x }).then((d) => {
-            load();
+            $scope.go('ridesharing');
         });
-    }
-
-    $scope.remove = (id) => {
-        if (confirm('Delete travel plan?')) {
-            f.post(service, 'Delete', { id: id }).then((d) => {
-                load();
-            });
-        }
     }
 
 }])
